@@ -1,0 +1,167 @@
+graph={
+    '5' : ['3','7'],
+    '3' : ['2','4'],
+    '7' : ['8'],
+    '2' : [],
+    '4' : ['8'],
+    '8' : []
+}
+
+visited =[]
+queue=[]
+
+def bfs(visited, graph, node):
+    visited.append(node)
+    queue.append(node)
+    
+    while queue:
+        m=queue.pop(0)
+        print(m, end = " ")
+    
+        for neighbour in graph[m]: 
+            if neighbour not in visited:  
+                visited.append(neighbour)
+                queue.append(neighbour)
+    
+            
+print("Following is the Breadth-First Search")
+bfs(visited, graph, '5')            
+    
+..............................................................
+graph={
+    '5' : ['3','7'],
+    '3' : ['2','4'],
+    '7' : ['8'],
+    '2' : [],
+    '4' : ['8'],
+    '8' : []
+}
+
+visited=set()
+
+def dfs(visited, graph, node):
+    if node not in visited:
+        print (node)
+        visited.add(node)
+        for neighbour in graph[node]:
+            dfs(visited, graph, neighbour)
+            
+print("Following is the Depth-First Search")
+dfs(visited, graph, '5')
+.................................................................
+AES
+
+pip install PyCryptodome
+from Crypto.Cipher import AES
+from secrets import token_bytes
+
+def encrypt(msg,key):
+  cipher = AES.new(key,AES.MODE_EAX)
+  nonce = cipher.nonce
+  cipher_text , tag = cipher.encrypt_and_digest(msg.encode("ascii"))
+  return cipher_text , tag , nonce 
+
+def decrypt(cipher_text, tag, nonce):
+  cipher = AES.new(key,AES.MODE_EAX,nonce=nonce)
+  plain_text = cipher.decrypt(cipher_text)
+  
+  try:
+    cipher.verify(tag)
+    return plain_text.decode("ascii")   
+  except:
+    return False
+
+key = token_bytes(16)
+cipher_text, tag, nonce = encrypt(input("Enter plain text : "),key)
+plain_text = decrypt(cipher_text, tag , nonce = nonce)
+
+if(plain_text==False):
+  print("Message has been corrupted")
+else:
+  print(f'\nPlaintext : {plain_text}')
+  print(f'Key : {key}')
+  print(f'Ciphertext : {cipher_text}')
+.......................................................................
+DES
+
+from Cryptodome.Cipher import AES
+from Cryptodome.Util.Padding import pad, unpad
+from Cryptodome.Random import get_random_bytes
+
+
+def encrypt(plaintext, key):
+    cipher = AES.new(key, AES.MODE_ECB)
+    cipher_text = cipher.encrypt(pad(plaintext, AES.block_size))
+    return cipher_text
+
+
+def decrypt(ciphertext, key):
+    cipher = AES.new(key, AES.MODE_ECB)
+    plaintext = unpad(cipher.decrypt(ciphertext), AES.block_size)
+    return plaintext
+
+
+key = get_random_bytes(32)  # for 64-bit key
+plaintext = b'This is a secret message'
+
+encrypted = encrypt(plaintext, key)
+decrypted = decrypt(encrypted, key)
+
+print(encrypted)
+print(decrypted)
+............................................................................
+N queen
+
+class Solution:
+    def isSafe(self,board,row:int,col:int):
+        if "Q" in [board[row][col] for row in range(row)]:return False
+        if "Q" in [board[row-i][j] for i , j in enumerate(range(col,-1,-1))]:return False
+        if "Q" in [board[row-i][j] for i , j in enumerate(range(col,len(board),1))]:return False
+        return True
+    def Solve(self,board,row,n):
+        if not n:
+            print(board)
+        if row >= len(board):
+            return
+        for i in range(len(board)):
+            if self.isSafe(board,row,i):
+                board[row][i] = "Q"
+                self.Solve(board,row+1,n-1)
+                board[row][i] = "."
+     def solveNQueens(self, n: int):
+         board = [["." for i in range(n)] for j in range(n)]
+         self.Solve(board,0,n)
+Solution().solveNQueens(4)
+....................................................................................
+ecryption
+
+import pyperclip
+def main():
+    myMessage = 'My name is Shivakant Pandey.'
+    myKey = 8
+    ciphertext = encryptMessage(myKey, myMessage)
+    print(ciphertext + '|')
+    pyperclip.copy(ciphertext)
+def encryptMessage(key, message):
+    ciphertext = [''] * key
+    for col in range(key): 
+        pointer = col
+        while pointer < len(message): 
+            ciphertext[col] += message[pointer]
+            pointer += key 
+    return ''.join(ciphertext)
+if __name__ == '__main__':
+    main()
+.........................................................................................
+bitwise
+
+s = input("Enter plain text : ")
+for i in s:
+  print(chr(ord(i) & 127), end ="") 
+print()
+for i in s:
+  print(chr(ord(i) | 127), end ="")
+print()
+for i in s:
+  print(chr(ord(i) ^ 127), end ="")
+print()
